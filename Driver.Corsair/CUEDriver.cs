@@ -184,7 +184,8 @@ namespace Driver.Corsair
                 _CorsairDeviceInfo nativeDeviceInfo = (_CorsairDeviceInfo)Marshal.PtrToStructure(tst, typeof(_CorsairDeviceInfo));
                 Debug.WriteLine(nativeDeviceInfo.ledsCount + " leds");
                 CorsairRGBDeviceInfo info = new CorsairRGBDeviceInfo(i, DeviceTypes.Other, nativeDeviceInfo, modelCounter);
-                string friendlyName = info.DeviceName.Replace("Corsair", "");
+                string friendlyName = info.DeviceName.Replace("Corsair", "").Trim();
+
                 if (!info.CapsMask.HasFlag(CorsairDeviceCaps.Lighting))
                 {
                     continue; // Everything that doesn't support lighting control is useless
@@ -286,11 +287,12 @@ namespace Driver.Corsair
 
                             int channelDeviceInfoStructSize = Marshal.SizeOf(typeof(_CorsairChannelDeviceInfo));
                             IntPtr channelDeviceInfoPtr = channelInfo.devices;
+                            CorsairLedId channelReferenceLed = GetChannelReferenceId(info.CorsairDeviceType, channel);
+                            _CorsairChannelDeviceInfo channelDeviceInfo = (_CorsairChannelDeviceInfo)Marshal.PtrToStructure(channelDeviceInfoPtr, typeof(_CorsairChannelDeviceInfo));
+                            
 
                             for (int dev = 0; dev < channelInfo.devicesCount; dev++)
                             {
-                                CorsairLedId channelReferenceLed = GetChannelReferenceId(info.CorsairDeviceType, channel);
-                                _CorsairChannelDeviceInfo channelDeviceInfo = (_CorsairChannelDeviceInfo)Marshal.PtrToStructure(channelDeviceInfoPtr, typeof(_CorsairChannelDeviceInfo));
                                 CorsairLedId referenceLed = channelReferenceLed + (dev * channelDeviceInfo.deviceLedCount);
 
                                 List<ControlDevice.LedUnit> leds = new List<ControlDevice.LedUnit>();
