@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{ED307659-03AE-4B53-9580-7491F2C331DC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Driver.Corsair</RootNamespace>
+    <AssemblyName>Driver.Corsair</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SLSInterface">
+      <HintPath>.\SLSInterface.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CorsairAccessMode.cs" />
+    <Compile Include="CorsairDeviceInfo.cs" />
+    <Compile Include="CorsairError.cs" />
+    <Compile Include="CorsairLedIds.cs" />
+    <Compile Include="CorsairProtocolDetails.cs" />
+    <Compile Include="CorsairRGBDeviceInfo.cs" />
+    <Compile Include="CUEDriver.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="_CUESDK.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ProductImages\AIO.png" />
+    <EmbeddedResource Include="ProductImages\DarkCore.png" />
+    <EmbeddedResource Include="ProductImages\DomPlat.png" />
+    <EmbeddedResource Include="ProductImages\Glaive.png" />
+    <EmbeddedResource Include="ProductImages\GPU.png" />
+    <EmbeddedResource Include="ProductImages\Harpoon.png" />
+    <EmbeddedResource Include="ProductImages\HDFan.png" />
+    <EmbeddedResource Include="ProductImages\Ironclaw.png" />
+    <EmbeddedResource Include="ProductImages\K65.png" />
+    <EmbeddedResource Include="ProductImages\K68.png" />
+    <EmbeddedResource Include="ProductImages\K70.png" />
+    <EmbeddedResource Include="ProductImages\K70v2.png" />
+    <EmbeddedResource Include="ProductImages\K70v2SE.png" />
+    <EmbeddedResource Include="ProductImages\K95.png" />
+    <EmbeddedResource Include="ProductImages\K95Plat.png" />
+    <EmbeddedResource Include="ProductImages\LedStrip.png" />
+    <EmbeddedResource Include="ProductImages\LLFan.png" />
+    <EmbeddedResource Include="ProductImages\LS100.png" />
+    <EmbeddedResource Include="ProductImages\LT100.png" />
+    <EmbeddedResource Include="ProductImages\M55.png" />
+    <EmbeddedResource Include="ProductImages\M65.png" />
+    <EmbeddedResource Include="ProductImages\MLFan.png" />
+    <EmbeddedResource Include="ProductImages\MM800.png" />
+    <EmbeddedResource Include="ProductImages\Motherboard.png" />
+    <EmbeddedResource Include="ProductImages\Nightsword.png" />
+    <EmbeddedResource Include="ProductImages\QLFan.png" />
+    <EmbeddedResource Include="ProductImages\Scimitar.png" />
+    <EmbeddedResource Include="ProductImages\SPFan.png" />
+    <EmbeddedResource Include="ProductImages\ST100.png" />
+    <EmbeddedResource Include="ProductImages\Strafe.png" />
+    <EmbeddedResource Include="ProductImages\Strafev2.png" />
+    <EmbeddedResource Include="ProductImages\VengeancePro.png" />
+    <EmbeddedResource Include="ProductImages\Virtuoso.png" />
+    <EmbeddedResource Include="ProductImages\Void.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CorsairPlaceholder.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
