@@ -9,11 +9,11 @@ using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
-using MadLedFrameworkSDK;
+using SimpleLed;
 
 namespace Driver.Corsair
 {
-    public class CUEDriver : ISimpleLEDDriver
+    public class CUEDriver : ISimpleLed
     {
         public bool IsInitialized { get; private set; }
 
