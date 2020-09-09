@@ -185,14 +185,6 @@ namespace Driver.Corsair
                     continue; // Everything that doesn't support lighting control is useless
                 }
 
-                int typeInt = (int) info.CorsairDeviceType;
-                string[] unknownInfo =
-                {
-                    "name:" + info.DeviceName, "type: " + GetDeviceType(info.CorsairDeviceType).ToString(),
-                    "model:" + info.Model, "typeid: " + typeInt.ToString(), Environment.NewLine
-                };
-                File.AppendAllLines(@"C:\Users\jacklrpendleton\source\repos\JackNetRGBSync\bin\unknownDeviceInfo.txt",
-                    unknownInfo);
 
                 var nativeLedPositions = (_CorsairLedPositions) Marshal.PtrToStructure(
                     _CUESDK.CorsairGetLedPositionsByDeviceIndex(info.CorsairDeviceIndex), typeof(_CorsairLedPositions));
