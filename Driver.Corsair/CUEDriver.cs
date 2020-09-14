@@ -697,7 +697,13 @@ namespace Driver.Corsair
                 SupportsPull = true,
                 SupportsPush = true,
                 IsSource = false,
-                Id = Guid.Parse("59440d02-8ca3-4e35-a9a3-88b024cc0e2d")
+                Id = Guid.Parse("59440d02-8ca3-4e35-a9a3-88b024cc0e2d"),
+                SupportsCustomConfig = false,
+                Author = "Fanman03",
+                CurrentVersion = new ReleaseNumber("1.0.0.0"),
+                GitHubLink = "https://github.com/SimpleLed/Driver.Corsair",
+                Blurb = "Driver for Corsair devices compatible with the iCUE SDK.",
+                IsPublicRelease = false
             };
         }
 
