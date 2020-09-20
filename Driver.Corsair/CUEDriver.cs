@@ -469,6 +469,39 @@ namespace Driver.Corsair
                             }
                         }
                     }
+                    else if (info.CorsairDeviceType == CorsairDeviceType.Keyboard)
+                    {
+                        List<ControlDevice.LedUnit> leds = new List<ControlDevice.LedUnit>();
+
+                        int ctr = 0;
+                        foreach (var lp in positions.OrderBy(x => x.LedId))
+                        {
+                            leds.Add(new ControlDevice.LedUnit()
+                            {
+                                Data = new CorsairPositionalLEDData()
+                                {
+                                    LEDNumber = ctr,
+                                    CorsairLedId = lp.LedId,
+                                    X = (int) lp.left,
+                                    Y = (int) lp.top
+                                },
+                                LEDName = device.Name + " " + ctr
+                            });
+                            ctr++;
+                        }
+
+                        if (positions.Any())
+                        {
+                            int largestX = (int)positions.Max(x => x.left);
+                            int largestY = (int)positions.Max(x => x.top);
+                            device.Has2DSupport = true;
+                            device.GridHeight = largestY;
+                            device.GridWidth = largestX;
+                            device.LEDs = leds.ToArray();
+                        }
+
+
+                    }
                     else
                     {
                         List<ControlDevice.LedUnit> leds = new List<ControlDevice.LedUnit>();
@@ -478,26 +511,18 @@ namespace Driver.Corsair
                         {
                             leds.Add(new ControlDevice.LedUnit()
                             {
-                                Data = new CorsairLedData
+                                Data = new CorsairLedData()
                                 {
                                     LEDNumber = ctr,
                                     CorsairLedId = lp.LedId
                                 },
                                 LEDName = device.Name + " " + ctr
                             });
+                            ctr++;
                         }
 
-                        //for (int l = 0; l < nativeDeviceInfo.ledsCount; l++)
-                        //{
-                        //    leds.Add(new ControlDevice.LedUnit
-                        //    {
-                        //        Data = new ControlDevice.LEDData { LEDNumber = l },
-                        //        LEDName = "LED " + l,
-
-                        //    });
-                        //}
-
                         device.LEDs = leds.ToArray();
+
                     }
 
                     if (info.CorsairDeviceType == CorsairDeviceType.CommanderPro ||
@@ -591,12 +616,14 @@ namespace Driver.Corsair
             foreach (var led in controlDevice.LEDs)
             {
                 _CorsairLedColor color = new _CorsairLedColor
-                {
-                    ledId = ((CorsairLedData) led.Data).CorsairLedId,
-                    r = (byte) led.Color.Red,
-                    g = (byte) led.Color.Green,
-                    b = (byte) led.Color.Blue
-                };
+                    {
+                        ledId = led.Data is CorsairLedData cld ? cld.CorsairLedId : ((CorsairPositionalLEDData)led.Data).CorsairLedId,
+                        r = (byte) led.Color.Red,
+                        g = (byte) led.Color.Green,
+                        b = (byte) led.Color.Blue
+                    };
+
+
 
                 Marshal.StructureToPtr(color, addPtr, false);
                 addPtr = new IntPtr(addPtr.ToInt64() + structSize);
@@ -650,7 +677,7 @@ namespace Driver.Corsair
             IntPtr addPtr = new IntPtr(ptr.ToInt64());
             foreach (var led in controlDevice.LEDs)
             {
-                _CorsairLedColor color = new _CorsairLedColor {ledId = (int) ((CorsairLedData) led.Data).CorsairLedId};
+                _CorsairLedColor color = new _CorsairLedColor {ledId = led.Data is CorsairLedData cld ? cld.CorsairLedId : ((CorsairPositionalLEDData)led.Data).CorsairLedId };
                 Marshal.StructureToPtr(color, addPtr, false);
                 addPtr = new IntPtr(addPtr.ToInt64() + structSize);
             }
@@ -728,6 +755,11 @@ namespace Driver.Corsair
         }
 
         public class CorsairLedData : ControlDevice.LEDData
+        {
+            public int CorsairLedId { get; set; }
+        }
+
+        public class CorsairPositionalLEDData : ControlDevice.PositionalLEDData
         {
             public int CorsairLedId { get; set; }
         }
