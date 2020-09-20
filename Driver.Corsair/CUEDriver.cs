@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using SimpleLed;
 
 namespace Driver.Corsair
@@ -483,7 +484,7 @@ namespace Driver.Corsair
                                     LEDNumber = ctr,
                                     CorsairLedId = lp.LedId,
                                     X = (int) lp.left,
-                                    Y = (int) lp.top
+                                    Y = Math.Max(0, ((int)lp.top - 38)),
                                 },
                                 LEDName = device.Name + " " + ctr
                             });
@@ -498,6 +499,9 @@ namespace Driver.Corsair
                             device.GridHeight = largestY;
                             device.GridWidth = largestX;
                             device.LEDs = leds.ToArray();
+                            string json = JsonConvert.SerializeObject(device, Formatting.Indented);
+                            System.IO.File.WriteAllText(@"C:\Users\jacklrpendleton\Documents\k70v2map.txt", json);
+
                         }
 
 
