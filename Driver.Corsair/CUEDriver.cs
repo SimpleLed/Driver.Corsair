@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SimpleLed;
+using SimpleLed.RawInput;
 
 namespace Driver.Corsair
 {
@@ -731,7 +732,7 @@ namespace Driver.Corsair
                 Id = Guid.Parse("59440d02-8ca3-4e35-a9a3-88b024cc0e2d"),
                 Author = "Fanman03",
                 Blurb = "Driver for all devices compatible with the iCUE SDK.",
-                CurrentVersion = new ReleaseNumber(1,0,0,4),
+                CurrentVersion = new ReleaseNumber(1,0,0,5),
                 GitHubLink = "https://github.com/SimpleLed/Driver.Corsair",
                 IsPublicRelease = true
             };
@@ -767,5 +768,30 @@ namespace Driver.Corsair
         {
             public int CorsairLedId { get; set; }
         }
+
+        /*public class CorsairKeyboardControlDevice : ControlDevice
+        {
+            public void HandleInput(KeyPressEvent e)
+            {
+                var derp = HyperXSupport.humm.FirstOrDefault(x => x.DebugName == e.VKeyName);
+
+                if (derp != null)
+                {
+
+                    TriggerAllMapped(new TriggerEventArgs
+                    {
+                        FloatX = (derp.X / (float)GridWidth),
+                        FloatY = (derp.Y / (float)GridHeight),
+                        X = derp.X,
+                        Y = derp.Y
+                    });
+
+                }
+                else
+                {
+                    Debug.WriteLine("Key not found: " + e.VKeyName + " - " + e.VKey);
+                }
+            }
+        }*/
     }
 }
