@@ -61,9 +61,8 @@ namespace Driver.Corsair
         LightningNodePro = 7,
         MemoryModule = 8,
         Cooler = 9,
-        Unknown2 = 10,
-        Motherboard = 11,
-        GraphicsCard = 12
+        Motherboard = 10,
+        GraphicsCard = 11
     };
 
     // ReSharper disable once InconsistentNaming

@@ -37,7 +37,7 @@
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SimpleLed, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\TestHarness\packages\SimpleLed.1.0.5\lib\net472\SimpleLed.dll</HintPath>
+      <HintPath>..\packages\SimpleLed.1.0.5\lib\net472\SimpleLed.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
