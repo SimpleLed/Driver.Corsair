@@ -15,13 +15,13 @@ namespace Driver.Corsair
         /// Gets a modifiable list of paths used to find the native SDK-dlls for x86 applications.
         /// The first match will be used.
         /// </summary>
-        public static List<string> PossibleX86NativePaths { get; } = new List<string> { "x86/CUESDK.dll", "x86/CUESDK_2015.dll", "x86/CUESDK_2013.dll", Directory.GetCurrentDirectory() + "\\redist\\CUESDK.dll" };
+        public static List<string> PossibleX86NativePaths { get; } = new List<string> { Directory.GetCurrentDirectory() + "\\CUESDK.dll" };
 
         /// <summary>
         /// Gets a modifiable list of paths used to find the native SDK-dlls for x64 applications.
         /// The first match will be used.
         /// </summary>
-        public static List<string> PossibleX64NativePaths { get; } = new List<string> { "x64/CUESDK.dll", "x64/CUESDK_2015.dll", "x64/CUESDK_2013.dll", Directory.GetCurrentDirectory() + "\\redist\\CUESDK64.dll" };
+        public static List<string> PossibleX64NativePaths { get; } = new List<string> { Directory.GetCurrentDirectory() + "\\CUESDK64.dll" };
 
         #region Libary Management
 
@@ -154,7 +154,8 @@ namespace Driver.Corsair
         /// and follows after one or more calls of CorsairSetLedsColorsBufferByDeviceIndex to set the LEDs buffer.
         /// This function does not take logical layout into account.
         /// </summary>
-        internal static bool CorsairSetLedsColorsBufferByDeviceIndex(int deviceIndex, int size, IntPtr ledsColors) => _corsairSetLedsColorsBufferByDeviceIndexPointer(deviceIndex, size, ledsColors);
+        internal static bool CorsairSetLedsColorsBufferByDeviceIndex(int deviceIndex, int size, IntPtr ledsColors) => 
+            _corsairSetLedsColorsBufferByDeviceIndexPointer(deviceIndex, size, ledsColors);
 
         /// <summary>
         /// CUE-SDK: writes to the devices LEDs colors buffer which is previously filled by the CorsairSetLedsColorsBufferByDeviceIndex function.

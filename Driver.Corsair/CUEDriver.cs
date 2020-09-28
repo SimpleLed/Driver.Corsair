@@ -695,13 +695,25 @@ namespace Driver.Corsair
             {
                 _CorsairLedColor ledColor =
                     (_CorsairLedColor) Marshal.PtrToStructure(readPtr, typeof(_CorsairLedColor));
-
-                var setme = controlDevice.LEDs.FirstOrDefault(x =>
-                    ((CorsairLedData) x.Data).CorsairLedId == ledColor.ledId);
-                if (setme != null)
+                try
                 {
-                    setme.Color = new LEDColor(ledColor.r, ledColor.g, ledColor.b);
+                    var setme = controlDevice.LEDs.FirstOrDefault(x =>
+                        ((CorsairLedData) x.Data).CorsairLedId == ledColor.ledId);
+                    if (setme != null)
+                    {
+                        setme.Color = new LEDColor(ledColor.r, ledColor.g, ledColor.b);
+                    }
                 }
+                catch
+                {
+                    var setme = controlDevice.LEDs.FirstOrDefault(x =>
+                        ((CorsairPositionalLEDData)x.Data).CorsairLedId == ledColor.ledId);
+                    if (setme != null)
+                    {
+                        setme.Color = new LEDColor(ledColor.r, ledColor.g, ledColor.b);
+                    } 
+                }
+
 
                 readPtr = new IntPtr(readPtr.ToInt64() + structSize);
             }
