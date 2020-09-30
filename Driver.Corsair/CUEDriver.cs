@@ -19,6 +19,8 @@ namespace Driver.Corsair
     {
         public bool IsInitialized { get; private set; }
 
+        public event EventHandler DeviceRescanRequired;
+
         /// <summary>
         /// Gets the loaded architecture (x64/x86).
         /// </summary>
