@@ -22,7 +22,7 @@ namespace Driver.Corsair
         public event EventHandler DeviceRescanRequired;
 
         /// <summary>
-        /// Gets the loaded architecture (x64/x86).
+        /// Gets the loaded architecture (x64/x86).than
         /// </summary>
         public string LoadedArchitecture => _CUESDK.LoadedArchitecture;
 
@@ -502,9 +502,6 @@ namespace Driver.Corsair
                             device.GridHeight = largestY;
                             device.GridWidth = largestX;
                             device.LEDs = leds.ToArray();
-                            string json = JsonConvert.SerializeObject(device, Formatting.Indented);
-                            System.IO.File.WriteAllText(@"C:\Users\jacklrpendleton\Documents\k70v2map.txt", json);
-
                         }
 
 
@@ -746,7 +743,7 @@ namespace Driver.Corsair
                 Id = Guid.Parse("59440d02-8ca3-4e35-a9a3-88b024cc0e2d"),
                 Author = "Fanman03",
                 Blurb = "Driver for all devices compatible with the iCUE SDK.",
-                CurrentVersion = new ReleaseNumber(1,0,0,6),
+                CurrentVersion = new ReleaseNumber(1,0,0,7),
                 GitHubLink = "https://github.com/SimpleLed/Driver.Corsair",
                 IsPublicRelease = true
             };
