@@ -48,6 +48,7 @@ namespace Driver.Corsair
 
         public void Configure(DriverDetails driverDetails)
         {
+            _CUESDK.HomePath = driverDetails.HomeFolder;
             _CUESDK.Reload();
 
             ProtocolDetails = new CorsairProtocolDetails(_CUESDK.CorsairPerformProtocolHandshake());

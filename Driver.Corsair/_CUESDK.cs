@@ -15,13 +15,13 @@ namespace Driver.Corsair
         /// Gets a modifiable list of paths used to find the native SDK-dlls for x86 applications.
         /// The first match will be used.
         /// </summary>
-        public static List<string> PossibleX86NativePaths { get; } = new List<string> { Directory.GetCurrentDirectory() + "\\CUESDK.dll" };
+        public static List<string> PossibleX86NativePaths { get; } = new List<string> { HomePath + "\\CUESDK.dll" };
 
         /// <summary>
         /// Gets a modifiable list of paths used to find the native SDK-dlls for x64 applications.
         /// The first match will be used.
         /// </summary>
-        public static List<string> PossibleX64NativePaths { get; } = new List<string> { Directory.GetCurrentDirectory() + "\\CUESDK64.dll" };
+        public static List<string> PossibleX64NativePaths { get; } = new List<string> { HomePath + "\\CUESDK64.dll" };
 
         #region Libary Management
 
@@ -31,6 +31,8 @@ namespace Driver.Corsair
         /// Gets the loaded architecture (x64/x86).
         /// </summary>
         internal static string LoadedArchitecture { get; private set; }
+
+        public static string HomePath { get; set; }
 
         /// <summary>
         /// Reloads the SDK.
