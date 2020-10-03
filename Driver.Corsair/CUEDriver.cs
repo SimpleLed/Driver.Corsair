@@ -297,6 +297,8 @@ namespace Driver.Corsair
                                 {
                                     Driver = this,
                                     Name = friendlyName,
+                                    ConnectedTo = "Channel "+(channel+1),
+                                    TitleOverride = info.DeviceName,
                                     ProductImage = GetImage(imageKey),
                                     CorsairDeviceIndex = info.CorsairDeviceIndex,
                                     DeviceType = GetDeviceType(info.CorsairDeviceType)
@@ -405,6 +407,8 @@ namespace Driver.Corsair
                                         Name = subDeviceName + " " +
                                                (dev + 1)
                                                .ToString(), //make device id start at 1 not 0 because normal people use this program
+                                        ConnectedTo = "Channel " + (channel + 1),
+                                        TitleOverride = info.DeviceName,
                                         ProductImage = GetImage(subImageKey),
                                         CorsairDeviceIndex = info.CorsairDeviceIndex,
                                         DeviceType = subDeviceType
