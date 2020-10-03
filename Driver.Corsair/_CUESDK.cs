@@ -15,13 +15,7 @@ namespace Driver.Corsair
         /// Gets a modifiable list of paths used to find the native SDK-dlls for x86 applications.
         /// The first match will be used.
         /// </summary>
-        public static List<string> PossibleX86NativePaths { get; } = new List<string> { HomePath + "\\CUESDK.dll" };
 
-        /// <summary>
-        /// Gets a modifiable list of paths used to find the native SDK-dlls for x64 applications.
-        /// The first match will be used.
-        /// </summary>
-        public static List<string> PossibleX64NativePaths { get; } = new List<string> { HomePath + "\\CUESDK64.dll" };
 
         #region Libary Management
 
@@ -45,10 +39,13 @@ namespace Driver.Corsair
 
         private static void LoadCUESDK()
         {
+
             if (_dllHandle != IntPtr.Zero) return;
 
+            var possibleX86NativePaths = new List<string> { HomePath + "\\CUESDK.dll" };
+            var possibleX64NativePaths = new List<string> { HomePath + "\\CUESDK64.dll" };
             // HACK: Load library at runtime to support both, x86 and x64 with one managed dll
-            List<string> possiblePathList = Environment.Is64BitProcess ? PossibleX64NativePaths : PossibleX86NativePaths;
+            List<string> possiblePathList = Environment.Is64BitProcess ? possibleX64NativePaths : possibleX86NativePaths;
             string dllPath = possiblePathList.FirstOrDefault(File.Exists);
             if (dllPath == null) throw new Exception($"Can't find the CUE-SDK at one of the expected locations:\r\n '{string.Join("\r\n", possiblePathList.Select(Path.GetFullPath))}'");
 
@@ -72,7 +69,6 @@ namespace Driver.Corsair
         {
             if (_dllHandle == IntPtr.Zero) return;
 
-            // ReSharper disable once EmptyEmbeddedStatement - DarthAffe 20.02.2016: We might need to reduce the internal reference counter more than once to set the library free
             while (FreeLibrary(_dllHandle)) ;
             _dllHandle = IntPtr.Zero;
         }
@@ -156,7 +152,7 @@ namespace Driver.Corsair
         /// and follows after one or more calls of CorsairSetLedsColorsBufferByDeviceIndex to set the LEDs buffer.
         /// This function does not take logical layout into account.
         /// </summary>
-        internal static bool CorsairSetLedsColorsBufferByDeviceIndex(int deviceIndex, int size, IntPtr ledsColors) => 
+        internal static bool CorsairSetLedsColorsBufferByDeviceIndex(int deviceIndex, int size, IntPtr ledsColors) =>
             _corsairSetLedsColorsBufferByDeviceIndexPointer(deviceIndex, size, ledsColors);
 
         /// <summary>
