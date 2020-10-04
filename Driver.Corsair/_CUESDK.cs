@@ -42,8 +42,8 @@ namespace Driver.Corsair
 
             if (_dllHandle != IntPtr.Zero) return;
 
-            var possibleX86NativePaths = new List<string> { HomePath + "\\CUESDK.dll" };
-            var possibleX64NativePaths = new List<string> { HomePath + "\\CUESDK64.dll" };
+            var possibleX86NativePaths = new List<string> { HomePath + "\\CUESDK.dll", "C:\\Users\\james\\source\\repos\\Org\\SimpleLed\\Driver.Corsair\\Driver.Corsair\\bin\\Debug\\CUESDK.dll" };
+            var possibleX64NativePaths = new List<string> { HomePath + "\\CUESDK64.dll", "C:\\Users\\james\\source\\repos\\Org\\SimpleLed\\Driver.Corsair\\Driver.Corsair\\bin\\Debug\\CUESDK64.dll" };
             // HACK: Load library at runtime to support both, x86 and x64 with one managed dll
             List<string> possiblePathList = Environment.Is64BitProcess ? possibleX64NativePaths : possibleX86NativePaths;
             string dllPath = possiblePathList.FirstOrDefault(File.Exists);

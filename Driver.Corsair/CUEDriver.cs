@@ -48,7 +48,11 @@ namespace Driver.Corsair
 
         public void Configure(DriverDetails driverDetails)
         {
-            _CUESDK.HomePath = driverDetails.HomeFolder;
+            if (driverDetails != null)
+            {
+                _CUESDK.HomePath = driverDetails.HomeFolder;
+            }
+
             _CUESDK.Reload();
 
             ProtocolDetails = new CorsairProtocolDetails(_CUESDK.CorsairPerformProtocolHandshake());
@@ -475,6 +479,10 @@ namespace Driver.Corsair
                                     devices.Add(subDevice);
                                 }
                             }
+
+
+                            int channelInfoStructSize = Marshal.SizeOf(typeof(_CorsairChannelInfo));
+                            channelInfoPtr = new IntPtr(channelInfoPtr.ToInt64() + channelInfoStructSize);
                         }
                     }
                     else if (info.CorsairDeviceType == CorsairDeviceType.Keyboard)
@@ -546,7 +554,7 @@ namespace Driver.Corsair
                 }
             }
 
-            foreach (ControlDevice controlDevice in devices)
+            foreach (ControlDevice controlDevice in devices.Where(t=>t.TitleOverride!=null))
             {
                 controlDevice.TitleOverride = controlDevice.TitleOverride.Replace("Corsair ", "");
             }
@@ -735,7 +743,7 @@ namespace Driver.Corsair
                 Id = Guid.Parse("59440d02-8ca3-4e35-a9a3-88b024cc0e2d"),
                 Author = "Fanman03",
                 Blurb = "Driver for all devices compatible with the iCUE SDK.",
-                CurrentVersion = new ReleaseNumber(1,0,0,12),
+                CurrentVersion = new ReleaseNumber(1,0,0,14),
                 GitHubLink = "https://github.com/SimpleLed/Driver.Corsair",
                 IsPublicRelease = true
             };
