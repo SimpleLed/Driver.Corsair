@@ -280,13 +280,13 @@ namespace Driver.Corsair
                     {
                         for (int channel = 0; channel < channelsInfo.channelsCount; channel++)
                         {
-                            _CorsairChannelInfo channelInfo =
-                                (_CorsairChannelInfo) Marshal.PtrToStructure(channelInfoPtr,
-                                    typeof(_CorsairChannelInfo));
+                            CorsairLedId channelReferenceLed = GetChannelReferenceId(info.CorsairDeviceType, channel);
+                            if (channelReferenceLed == CorsairLedId.Invalid) continue;
+                            _CorsairChannelInfo channelInfo = (_CorsairChannelInfo) Marshal.PtrToStructure(channelInfoPtr, typeof(_CorsairChannelInfo));
 
                             int channelDeviceInfoStructSize = Marshal.SizeOf(typeof(_CorsairChannelDeviceInfo));
                             IntPtr channelDeviceInfoPtr = channelInfo.devices;
-                            CorsairLedId channelReferenceLed = GetChannelReferenceId(info.CorsairDeviceType, channel);
+                            
                             _CorsairChannelDeviceInfo channelDeviceInfo =
                                 (_CorsairChannelDeviceInfo) Marshal.PtrToStructure(channelDeviceInfoPtr,
                                     typeof(_CorsairChannelDeviceInfo));
@@ -327,8 +327,7 @@ namespace Driver.Corsair
                             {
                                 for (int dev = 0; dev < channelInfo.devicesCount; dev++)
                                 {
-                                    CorsairLedId referenceLed =
-                                        channelReferenceLed + (dev * channelDeviceInfo.deviceLedCount);
+                                    CorsairLedId referenceLed = channelReferenceLed + (dev * channelDeviceInfo.deviceLedCount);
 
                                     List<ControlDevice.LedUnit> leds = new List<ControlDevice.LedUnit>();
 
@@ -545,6 +544,11 @@ namespace Driver.Corsair
                         devices.Add(device);
                     }
                 }
+            }
+
+            foreach (ControlDevice controlDevice in devices)
+            {
+                controlDevice.TitleOverride = controlDevice.TitleOverride.Replace("Corsair ", "");
             }
 
             var gp = devices.GroupBy(x => x.Name);
