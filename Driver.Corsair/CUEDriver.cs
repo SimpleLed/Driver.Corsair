@@ -547,6 +547,21 @@ namespace Driver.Corsair
                 }
             }
 
+            var gp = devices.GroupBy(x => x.Name);
+
+            foreach (var gpx in gp)
+            {
+                if (gpx.ToList().Count > 1)
+                {
+                    int ct = 0;
+                    foreach (ControlDevice controlDevice in gpx)
+                    {
+                        ct++;
+                        controlDevice.Name = controlDevice.Name + " #" + ct;
+                    }
+                }
+            }
+
             Debug.WriteLine("Done : " + LastError);
             return devices;
         }
@@ -649,38 +664,6 @@ namespace Driver.Corsair
 
         public void Pull(ControlDevice controlDevice)
         {
-            /*
-               int structSize = Marshal.SizeOf(typeof(_CorsairLedColor));
-               IntPtr ptr = Marshal.AllocHGlobal(structSize * controlDevice.LEDs.Count());
-               IntPtr addPtr = new IntPtr(ptr.ToInt64());
-               foreach (var led in controlDevice.LEDs)
-               {
-                   _CorsairLedColor color = new _CorsairLedColor { ledId = (int)(led.Data.LEDNumber) };
-                   Marshal.StructureToPtr(color, addPtr, false);
-                   addPtr = new IntPtr(addPtr.ToInt64() + structSize);
-               }
-
-               _CUESDK.CorsairGetLedsColorsByDeviceIndex(((CorsairDevice)controlDevice).CorsairDeviceIndex, controlDevice.LEDs.Count(), ptr);
-
-               _CorsairLedColorStruct[] derp = MakeArray<_CorsairLedColorStruct>(ptr.ToInt32(), controlDevice.LEDs.Length);
-
-               IntPtr readPtr = ptr;
-               for (int i = 0; i < controlDevice.LEDs.Count(); i++)
-               {
-                   _CorsairLedColor ledColor = (_CorsairLedColor)Marshal.PtrToStructure(readPtr, typeof(_CorsairLedColor));
-
-                   var led= controlDevice.LEDs.FirstOrDefault(x => x.Data is CorsairLedData cled && cled.CorsairLedId == ledColor.ledId);
-
-                   if (led != null)
-                   {
-                    led.Color = new LEDColor(ledColor.r, ledColor.g, ledColor.b);
-                   }
-
-                   readPtr = new IntPtr(readPtr.ToInt64() + structSize);
-               }
-
-               Marshal.FreeHGlobal(ptr);*/
-
             int structSize = Marshal.SizeOf(typeof(_CorsairLedColor));
             IntPtr ptr = Marshal.AllocHGlobal(structSize * controlDevice.LEDs.Count());
             IntPtr addPtr = new IntPtr(ptr.ToInt64());
@@ -748,7 +731,7 @@ namespace Driver.Corsair
                 Id = Guid.Parse("59440d02-8ca3-4e35-a9a3-88b024cc0e2d"),
                 Author = "Fanman03",
                 Blurb = "Driver for all devices compatible with the iCUE SDK.",
-                CurrentVersion = new ReleaseNumber(1,0,0,10),
+                CurrentVersion = new ReleaseNumber(1,0,0,11),
                 GitHubLink = "https://github.com/SimpleLed/Driver.Corsair",
                 IsPublicRelease = true
             };
