@@ -65,7 +65,7 @@ namespace Driver.Corsair
             _corsairGetLastErrorPointer = (CorsairGetLastErrorPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetLastError"), typeof(CorsairGetLastErrorPointer));
         }
 
-        private static void UnloadCUESDK()
+        public static void UnloadCUESDK()
         {
             if (_dllHandle == IntPtr.Zero) return;
 
