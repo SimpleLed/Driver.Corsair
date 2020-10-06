@@ -301,7 +301,7 @@ namespace Driver.Corsair
                                 CorsairDevice aioPumpDevice = new CorsairDevice
                                 {
                                     Driver = this,
-                                    Name = friendlyName,
+                                    Name = "AIO Pump",
                                     ConnectedTo = "Channel "+(channel+1),
                                     TitleOverride = info.DeviceName,
                                     ProductImage = GetImage(imageKey),
@@ -380,7 +380,7 @@ namespace Driver.Corsair
                                             subDeviceType = DeviceTypes.LedStrip;
                                             if (channelDeviceInfo.deviceLedCount > 10)
                                             {
-                                                subDeviceName = "LS100 LED Strip";
+                                                subDeviceName = "External LED Strip";
                                                 subImageKey = "LS100";
                                             }
                                             else
@@ -570,7 +570,7 @@ namespace Driver.Corsair
                     foreach (ControlDevice controlDevice in gpx)
                     {
                         ct++;
-                        controlDevice.Name = controlDevice.Name + " #" + ct;
+                        controlDevice.Name = controlDevice.Name + " (" + ct + ")";
                     }
                 }
             }
@@ -744,7 +744,7 @@ namespace Driver.Corsair
                 Id = Guid.Parse("59440d02-8ca3-4e35-a9a3-88b024cc0e2d"),
                 Author = "Fanman03",
                 Blurb = "Driver for all devices compatible with the iCUE SDK.",
-                CurrentVersion = new ReleaseNumber(1,0,0,15),
+                CurrentVersion = new ReleaseNumber(1,0,0,16),
                 GitHubLink = "https://github.com/SimpleLed/Driver.Corsair",
                 IsPublicRelease = true
             };

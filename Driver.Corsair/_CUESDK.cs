@@ -42,12 +42,12 @@ namespace Driver.Corsair
 
             if (_dllHandle != IntPtr.Zero) return;
 
-            var possibleX86NativePaths = new List<string> { HomePath + "\\CUESDK.dll"};
-            var possibleX64NativePaths = new List<string> { HomePath + "\\CUESDK64.dll" };
+            var possibleX86NativePaths = new List<string> { HomePath + "\\CUESDK.dll" };
+            var possibleX64NativePaths = new List<string> { HomePath + "\\CUESDK64.dll"};
             // HACK: Load library at runtime to support both, x86 and x64 with one managed dll
             List<string> possiblePathList = Environment.Is64BitProcess ? possibleX64NativePaths : possibleX86NativePaths;
             string dllPath = possiblePathList.FirstOrDefault(File.Exists);
-            if (dllPath == null) throw new Exception($"Can't find the CUE-SDK at one of the expected locations:\r\n '{string.Join("\r\n", possiblePathList.Select(Path.GetFullPath))}'");
+            if (dllPath == null) throw new Exception($"Can't find the CUE SDK at one of the expected locations:\r\n '{string.Join("\r\n", possiblePathList.Select(Path.GetFullPath))}'");
 
             _dllHandle = LoadLibrary(dllPath);
 
