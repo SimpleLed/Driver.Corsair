@@ -127,6 +127,8 @@ namespace Driver.Corsair
         Strip = 5,
         DAP = 6,
         Pump = 7,
-        FanQL = 8
+        FanQL = 8,
+        WaterBlock = 9,
+        FanSPPro = 10
     };
 }

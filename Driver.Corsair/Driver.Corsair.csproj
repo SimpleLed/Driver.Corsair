@@ -109,6 +109,10 @@
     <Content Include="CUESDK64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="ProductImages\CapellixAIO.png" />
+    <EmbeddedResource Include="ProductImages\HydroX.png" />
+    <EmbeddedResource Include="ProductImages\K100.png" />
+    <EmbeddedResource Include="ProductImages\SPProFan.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

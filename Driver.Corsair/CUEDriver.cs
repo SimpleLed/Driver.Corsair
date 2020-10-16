@@ -399,6 +399,16 @@ namespace Driver.Corsair
                                             subDeviceType = DeviceTypes.Fan;
                                             subImageKey = "QLFan";
                                             break;
+                                        case CorsairChannelDeviceType.FanSPPro:
+                                            subDeviceName = "SP PRO Fan";
+                                            subDeviceType = DeviceTypes.Fan;
+                                            subImageKey = "SPProFan";
+                                            break;
+                                        case CorsairChannelDeviceType.WaterBlock:
+                                            subDeviceName = "HydroX Device";
+                                            subDeviceType = DeviceTypes.Cooler;
+                                            subImageKey = "HydroX";
+                                            break;
                                         default:
                                             subDeviceName = "Unknown";
                                             break;
@@ -546,7 +556,8 @@ namespace Driver.Corsair
                         info.CorsairDeviceType == CorsairDeviceType.LightningNodePro
                         || info.CorsairDeviceType == CorsairDeviceType.Cooler) //filter out pointless devices
                     {
-                        continue;
+                        //continue;
+                        devices.Add(device);
                     }
                     else
                     {
