@@ -75,7 +75,6 @@ namespace Driver.Corsair
         public DriverDetails details;
         public void Configure(DriverDetails driverDetails)
         {
-            Process[] pname = Process.GetProcessesByName("iCUE");
             if (IsICUERunning())
             {
                 if (driverDetails != null)
@@ -121,9 +120,9 @@ namespace Driver.Corsair
                 }
                 Console.WriteLine("No iCUE process found, checking again in 10 seconds...");
                 reloadTimer = new DispatcherTimer();
-                reloadTimer.Interval = new TimeSpan(0, 0, 1);
+                reloadTimer.Interval = new TimeSpan(0, 0, 10);
                 reloadTimer.Tick += new EventHandler(reloadTimer_Tick);
-                reloadTimer.Start();
+                reloadTimer.Start(); 
             }
         }
 
@@ -134,10 +133,18 @@ namespace Driver.Corsair
             if (IsICUERunning())
             {
                 Console.WriteLine("Found iCUE, initializing...");
-                System.Threading.Thread.Sleep(10000);
-                Configure(details);
-                reloadTimer.Stop();
-                FireDeviceRescanRequired();
+                try
+                {
+                    Configure(details);
+
+                    reloadTimer.Stop();
+                    FireDeviceRescanRequired();
+                }
+                catch
+                {
+                    Console.WriteLine("Didn't work, trying again...");
+                }
+
             }
             else
             {
@@ -622,8 +629,8 @@ namespace Driver.Corsair
                             info.CorsairDeviceType == CorsairDeviceType.LightningNodePro
                             || info.CorsairDeviceType == CorsairDeviceType.Cooler) //filter out pointless devices
                         {
-                            //continue;
-                            devices.Add(device);
+                            continue;
+                            //devices.Add(device);
                         }
                         else
                         {
@@ -822,7 +829,7 @@ namespace Driver.Corsair
                 Id = Guid.Parse("59440d02-8ca3-4e35-a9a3-88b024cc0e2d"),
                 Author = "Fanman03",
                 Blurb = "Driver for all devices compatible with the iCUE SDK.",
-                CurrentVersion = new ReleaseNumber(1,0,0,16),
+                CurrentVersion = new ReleaseNumber(1,0,0,17),
                 GitHubLink = "https://github.com/SimpleLed/Driver.Corsair",
                 IsPublicRelease = true
             };
