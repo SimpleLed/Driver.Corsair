@@ -73,57 +73,96 @@ namespace Driver.Corsair
         }
 
         public DriverDetails details;
+        public event Events.DeviceChangeEventHandler DeviceAdded;
+        public event Events.DeviceChangeEventHandler DeviceRemoved;
+
+        List<ControlDevice> foundDevices = new List<ControlDevice>();
+        private string homePath = "";
+        private System.Timers.Timer scanTimer;
         public void Configure(DriverDetails driverDetails)
         {
-            if (IsICUERunning())
+            if (driverDetails != null)
             {
-                if (driverDetails != null)
-                {
-                    _CUESDK.HomePath = driverDetails.HomeFolder;
-                }
-
-                _CUESDK.Reload();
-
-                ProtocolDetails = new CorsairProtocolDetails(_CUESDK.CorsairPerformProtocolHandshake());
-
-                CorsairError error = LastError;
-                if (error != CorsairError.Success)
-                    throw new Exception(error.ToString());
-
-                if (ProtocolDetails.BreakingChanges)
-                    throw new Exception("The SDK currently used isn't compatible with the installed version of CUE.\r\n"
-                                        + $"CUE-Version: {ProtocolDetails.ServerVersion} (Protocol {ProtocolDetails.ServerProtocolVersion})\r\n"
-                                        + $"SDK-Version: {ProtocolDetails.SdkVersion} (Protocol {ProtocolDetails.SdkProtocolVersion})");
-
-
-                //if (!_CUESDK.CorsairRequestControl(CorsairAccessMode.ExclusiveLightingControl))
-                //{
-                //    throw new Exception(LastError.ToString());
-                //    HasExclusiveAccess = true;
-                //}
-                //else
-                //{
-                HasExclusiveAccess = false;
-                //}
-
-                if (!_CUESDK.CorsairSetLayerPriority(127))
-                {
-                    throw new Exception(LastError.ToString());
-                }
-
+                homePath = driverDetails.HomeFolder;
             }
-            else
-            {
-                if (driverDetails != null)
-                {
-                    details = driverDetails;
-                }
-                Console.WriteLine("No iCUE process found, checking again in 10 seconds...");
-                reloadTimer = new DispatcherTimer();
-                reloadTimer.Interval = new TimeSpan(0, 0, 10);
-                reloadTimer.Tick += new EventHandler(reloadTimer_Tick);
-                reloadTimer.Start(); 
-            }
+
+            scanTimer = new Timer();
+
+            scanTimer.Interval = 10000;
+            scanTimer.Elapsed += ScanTimerOnElapsed;
+
+            scanTimer.Enabled = true;
+            Scan();
+            //var result = GetDevices();
+
+            //foreach (ControlDevice controlDevice in result)
+            //{
+            //    if (!foundDevices.Contains(controlDevice))
+            //    {
+            //        foundDevices.Add(controlDevice);
+            //        DeviceAdded?.Invoke(this, new Events.DeviceChangeEventArgs(controlDevice));
+            //    }
+            //}
+
+            //if (IsICUERunning())
+            //{
+            //    if (driverDetails != null)
+            //    {
+            //        _CUESDK.HomePath = driverDetails.HomeFolder;
+            //    }
+
+            //    _CUESDK.Reload();
+
+            //    ProtocolDetails = new CorsairProtocolDetails(_CUESDK.CorsairPerformProtocolHandshake());
+
+            //    CorsairError error = LastError;
+            //    if (error != CorsairError.Success)
+            //        throw new Exception(error.ToString());
+
+            //    if (ProtocolDetails.BreakingChanges)
+            //        throw new Exception("The SDK currently used isn't compatible with the installed version of CUE.\r\n"
+            //                            + $"CUE-Version: {ProtocolDetails.ServerVersion} (Protocol {ProtocolDetails.ServerProtocolVersion})\r\n"
+            //                            + $"SDK-Version: {ProtocolDetails.SdkVersion} (Protocol {ProtocolDetails.SdkProtocolVersion})");
+
+
+            //    //if (!_CUESDK.CorsairRequestControl(CorsairAccessMode.ExclusiveLightingControl))
+            //    //{
+            //    //    throw new Exception(LastError.ToString());
+            //    //    HasExclusiveAccess = true;
+            //    //}
+            //    //else
+            //    //{
+            //    HasExclusiveAccess = false;
+            //    //}
+
+            //    if (!_CUESDK.CorsairSetLayerPriority(127))
+            //    {
+            //        throw new Exception(LastError.ToString());
+            //    }
+
+            //}
+            //else
+            //{
+            //    if (driverDetails != null)
+            //    {
+            //        details = driverDetails;
+            //    }
+            //    Console.WriteLine("No iCUE process found, checking again in 10 seconds...");
+            //    reloadTimer = new DispatcherTimer();
+            //    reloadTimer.Interval = new TimeSpan(0, 0, 10);
+            //    reloadTimer.Tick += new EventHandler(reloadTimer_Tick);
+            //    reloadTimer.Start(); 
+            //}
+        }
+
+        private void ScanTimerOnElapsed(object sender, ElapsedEventArgs e)
+        {
+            Scan();
+        }
+
+        private void ScanTimerOnTick(object sender, EventArgs e)
+        {
+            Scan();
         }
 
         private DispatcherTimer reloadTimer;
@@ -760,8 +799,100 @@ namespace Driver.Corsair
             Marshal.FreeHGlobal(ptr);
         }
 
+        private bool isCueSetUp = false;
+        DateTime lastTimeCueWasChecked = DateTime.MinValue;
+        DateTime lastTimeDevicesWasChecked = DateTime.MinValue;
+
+        private void Scan()
+        {
+            Debug.WriteLine("Scanning");
+            if (!isCueSetUp)
+            {
+               // if ((DateTime.Now - lastTimeCueWasChecked).TotalSeconds > 10)
+                {
+                    lastTimeCueWasChecked = DateTime.Now;
+
+                    if (IsICUERunning())
+                    {
+
+                        _CUESDK.HomePath = homePath;
+
+
+                        _CUESDK.Reload();
+
+                        ProtocolDetails = new CorsairProtocolDetails(_CUESDK.CorsairPerformProtocolHandshake());
+
+                        CorsairError error = LastError;
+                        if (error != CorsairError.Success)
+                            throw new Exception(error.ToString());
+
+                        if (ProtocolDetails.BreakingChanges)
+                            throw new Exception("The SDK currently used isn't compatible with the installed version of CUE.\r\n"
+                                                + $"CUE-Version: {ProtocolDetails.ServerVersion} (Protocol {ProtocolDetails.ServerProtocolVersion})\r\n"
+                                                + $"SDK-Version: {ProtocolDetails.SdkVersion} (Protocol {ProtocolDetails.SdkProtocolVersion})");
+
+
+                        //if (!_CUESDK.CorsairRequestControl(CorsairAccessMode.ExclusiveLightingControl))
+                        //{
+                        //    throw new Exception(LastError.ToString());
+                        //    HasExclusiveAccess = true;
+                        //}
+                        //else
+                        //{
+                        HasExclusiveAccess = false;
+                        //}
+
+                        if (!_CUESDK.CorsairSetLayerPriority(127))
+                        {
+                            throw new Exception(LastError.ToString());
+                        }
+
+                        isCueSetUp = true;
+                    }
+
+                }
+            }
+
+            if (isCueSetUp)
+            {
+               // if ((DateTime.Now - lastTimeDevicesWasChecked).TotalSeconds > 10)
+                {
+                    var result = GetDevices();
+                    foreach (ControlDevice controlDevicex in result)
+                    {
+                        if (foundDevices.Count == 0 || !foundDevices.Any(x => x.Name == controlDevicex.Name && x.TitleOverride == controlDevicex.TitleOverride))
+                        {
+                            foundDevices.Add(controlDevicex);
+                            DeviceAdded?.Invoke(this, new Events.DeviceChangeEventArgs(controlDevicex));
+                        }
+                    }
+
+                    List<ControlDevice> removeList = new List<ControlDevice>();
+                    foreach (ControlDevice controlDevicex in foundDevices)
+                    {
+                        if (result.Count == 0 || !result.Any(x=>x.Name == controlDevicex.Name && x.TitleOverride==controlDevicex.TitleOverride))
+                        {
+                            removeList.Add(controlDevicex);
+                            DeviceRemoved?.Invoke(this, new Events.DeviceChangeEventArgs(controlDevicex));
+                        }
+                    }
+
+                    foreach (ControlDevice controlDevicex in removeList)
+                    {
+                        foundDevices.Remove(controlDevicex);
+                    }
+                }
+            }
+        }
         public void Pull(ControlDevice controlDevice)
         {
+           
+
+            if (!isCueSetUp)
+            {
+                return;
+            }
+
             int structSize = Marshal.SizeOf(typeof(_CorsairLedColor));
             IntPtr ptr = Marshal.AllocHGlobal(structSize * controlDevice.LEDs.Count());
             IntPtr addPtr = new IntPtr(ptr.ToInt64());
@@ -849,6 +980,11 @@ namespace Driver.Corsair
         public string Name()
         {
             return "Corsair";
+        }
+
+        public void InterestedUSBChange(int VID, int PID)
+        {
+            throw new NotImplementedException();
         }
 
         public class CorsairDevice : ControlDevice
