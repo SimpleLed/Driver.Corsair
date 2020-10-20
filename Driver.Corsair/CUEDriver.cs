@@ -982,9 +982,8 @@ namespace Driver.Corsair
             return "Corsair";
         }
 
-        public void InterestedUSBChange(int VID, int PID)
+        public void InterestedUSBChange(int VID, int PID, bool connected)
         {
-            throw new NotImplementedException();
         }
 
         public class CorsairDevice : ControlDevice
