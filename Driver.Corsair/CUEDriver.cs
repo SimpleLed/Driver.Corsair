@@ -962,7 +962,9 @@ namespace Driver.Corsair
                 Blurb = "Driver for all devices compatible with the iCUE SDK.",
                 CurrentVersion = new ReleaseNumber(1,0,0,18),
                 GitHubLink = "https://github.com/SimpleLed/Driver.Corsair",
-                IsPublicRelease = true
+                IsPublicRelease = true,
+                ProductCategory = ProductCategory.Hardware
+
             };
         }
 
