@@ -204,6 +204,9 @@ namespace Driver.Corsair
                 var imgDict = new Dictionary<string, string>()
                 {
                     //Keyboards
+                    {"Corsair K60 RGB PRO", "K60"},
+                    {"Corsair K60 RGB PRO SE", "K60"},
+
                     {"Corsair K65 RGB", "K65"},
                     {"Corsair K65 LUX RGB", "K65"},
 
@@ -224,6 +227,8 @@ namespace Driver.Corsair
 
                     {"Corsair K95 RGB PLATINUM", "K95Plat"},
                     {"Corsair K95 RGB PLATINUM XT", "K95Plat"},
+
+                    {"Corsair K100 RGB", "K100"},
 
                     //Mice
                     {"Corsair HARPOON RGB", "Harpoon"},
@@ -265,8 +270,8 @@ namespace Driver.Corsair
                     {"Corsair VOID PRO Wireless", "Void"},
                     {"Corsair VOID ELITE Wireless", "Void"},
 
-                    {"Corsair VIRTUOSO RGB Wireless", "Virtuoso"},
-                    {"Corsair VIRTUOSO SE RGB Wireless", "Virtuoso"},
+                    {"Corsair VIRTUOSO", "Virtuoso"},
+                    {"Corsair VIRTUOSO SE", "Virtuoso"},
 
                     //DRAM
                     {"Corsair VENGEANCE RGB PRO", "VengeancePro"},
@@ -960,7 +965,7 @@ namespace Driver.Corsair
                 Id = Guid.Parse("59440d02-8ca3-4e35-a9a3-88b024cc0e2d"),
                 Author = "Fanman03",
                 Blurb = "Driver for all devices compatible with the iCUE SDK.",
-                CurrentVersion = new ReleaseNumber(1,0,0,18),
+                CurrentVersion = new ReleaseNumber(1,0,0,19),
                 GitHubLink = "https://github.com/SimpleLed/Driver.Corsair",
                 IsPublicRelease = true,
                 ProductCategory = ProductCategory.Hardware

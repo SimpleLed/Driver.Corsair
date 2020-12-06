@@ -110,6 +110,7 @@
     <Content Include="CUESDK64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="ProductImages\K60.png" />
     <EmbeddedResource Include="ProductImages\CapellixAIO.png" />
     <EmbeddedResource Include="ProductImages\HydroX.png" />
     <EmbeddedResource Include="ProductImages\K100.png" />
