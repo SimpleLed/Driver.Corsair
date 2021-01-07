@@ -486,7 +486,7 @@ namespace Driver.Corsair
                                             case CorsairChannelDeviceType.FanML:
                                                 subDeviceName = "ML Fan";
                                                 subDeviceType = DeviceTypes.Fan;
-                                                subImageKey = "MLFan";
+                                                subImageKey = "MLFan"; 
                                                 break;
                                             case CorsairChannelDeviceType.FanLL:
                                                 subDeviceName = "LL Fan";
@@ -498,22 +498,22 @@ namespace Driver.Corsair
                                                 if (channelDeviceInfo.deviceLedCount == 15)
                                                 {
                                                     subDeviceName = "250mm LED Strip";
-                                                    subImageKey = "LS100";
+                                                    subImageKey = "LS100-250mm";
                                                 }
                                                 else if (channelDeviceInfo.deviceLedCount == 21)
                                                 {
                                                     subDeviceName = "350mm LED Strip";
-                                                    subImageKey = "LS100";
+                                                    subImageKey = "LS100-350mm";
                                                 }
                                                 else if(channelDeviceInfo.deviceLedCount == 27)
                                                 {
                                                     subDeviceName = "450mm LED Strip";
-                                                    subImageKey = "LS100";
+                                                    subImageKey = "LS100-450mm";
                                                 }
                                                 else if (channelDeviceInfo.deviceLedCount > 80)
                                                 {
                                                     subDeviceName = "1.4M LED Strip";
-                                                    subImageKey = "LS100-XL";
+                                                    subImageKey = "LS100-1M";
                                                 }
                                                 else
                                                 {
@@ -980,7 +980,7 @@ namespace Driver.Corsair
                 Id = Guid.Parse("59440d02-8ca3-4e35-a9a3-88b024cc0e2d"),
                 Author = "Fanman03",
                 Blurb = "Driver for all devices compatible with the iCUE SDK.",
-                CurrentVersion = new ReleaseNumber(1,0,0,21),
+                CurrentVersion = new ReleaseNumber(1,0,0,20),
                 GitHubLink = "https://github.com/SimpleLed/Driver.Corsair",
                 IsPublicRelease = true,
                 ProductCategory = ProductCategory.Hardware

@@ -79,7 +79,7 @@
     <EmbeddedResource Include="ProductImages\K95Plat.png" />
     <EmbeddedResource Include="ProductImages\LedStrip.png" />
     <EmbeddedResource Include="ProductImages\LLFan.png" />
-    <EmbeddedResource Include="ProductImages\LS100.png" />
+    <EmbeddedResource Include="ProductImages\LS100-450mm.png" />
     <EmbeddedResource Include="ProductImages\LT100.png" />
     <EmbeddedResource Include="ProductImages\M55.png" />
     <EmbeddedResource Include="ProductImages\M65.png" />
@@ -110,7 +110,9 @@
     <Content Include="CUESDK64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="ProductImages\LS100-XL.png" />
+    <EmbeddedResource Include="ProductImages\LS100-1M.png" />
+    <EmbeddedResource Include="ProductImages\LS100-250mm.png" />
+    <EmbeddedResource Include="ProductImages\LS100-350mm.png" />
     <EmbeddedResource Include="ProductImages\K60.png" />
     <EmbeddedResource Include="ProductImages\CapellixAIO.png" />
     <EmbeddedResource Include="ProductImages\HydroX.png" />
