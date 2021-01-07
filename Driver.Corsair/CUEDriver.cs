@@ -495,14 +495,29 @@ namespace Driver.Corsair
                                                 break;
                                             case CorsairChannelDeviceType.Strip:
                                                 subDeviceType = DeviceTypes.LedStrip;
-                                                if (channelDeviceInfo.deviceLedCount > 10)
+                                                if (channelDeviceInfo.deviceLedCount == 15)
                                                 {
-                                                    subDeviceName = "External LED Strip";
+                                                    subDeviceName = "250mm LED Strip";
                                                     subImageKey = "LS100";
+                                                }
+                                                else if (channelDeviceInfo.deviceLedCount == 21)
+                                                {
+                                                    subDeviceName = "350mm LED Strip";
+                                                    subImageKey = "LS100";
+                                                }
+                                                else if(channelDeviceInfo.deviceLedCount == 27)
+                                                {
+                                                    subDeviceName = "450mm LED Strip";
+                                                    subImageKey = "LS100";
+                                                }
+                                                else if (channelDeviceInfo.deviceLedCount > 80)
+                                                {
+                                                    subDeviceName = "1.4M LED Strip";
+                                                    subImageKey = "LS100-XL";
                                                 }
                                                 else
                                                 {
-                                                    subDeviceName = "Internal LED Strip";
+                                                    subDeviceName = "LED Strip";
                                                     subImageKey = "LedStrip";
                                                 }
 
@@ -965,7 +980,7 @@ namespace Driver.Corsair
                 Id = Guid.Parse("59440d02-8ca3-4e35-a9a3-88b024cc0e2d"),
                 Author = "Fanman03",
                 Blurb = "Driver for all devices compatible with the iCUE SDK.",
-                CurrentVersion = new ReleaseNumber(1,0,0,20),
+                CurrentVersion = new ReleaseNumber(1,0,0,21),
                 GitHubLink = "https://github.com/SimpleLed/Driver.Corsair",
                 IsPublicRelease = true,
                 ProductCategory = ProductCategory.Hardware
