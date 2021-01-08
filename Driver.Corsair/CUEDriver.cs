@@ -57,7 +57,11 @@ namespace Driver.Corsair
         public void Dispose()
         {
             _CUESDK.UnloadCUESDK();
+            okayToUseCue = false;
         }
+
+
+        private bool okayToUseCue = false;
 
         public bool IsICUERunning()
         {
@@ -159,38 +163,7 @@ namespace Driver.Corsair
         {
             Scan();
         }
-
-        private void ScanTimerOnTick(object sender, EventArgs e)
-        {
-            Scan();
-        }
-
-        private DispatcherTimer reloadTimer;
-
-        private void reloadTimer_Tick(object sender, EventArgs e)
-        {
-            if (IsICUERunning())
-            {
-                Console.WriteLine("Found iCUE, initializing...");
-                try
-                {
-                    Configure(details);
-
-                    reloadTimer.Stop();
-                    FireDeviceRescanRequired();
-                }
-                catch
-                {
-                    Console.WriteLine("Didn't work, trying again...");
-                }
-
-            }
-            else
-            {
-                Console.WriteLine("No iCUE process found, checking again in 10 seconds...");
-            }
-        }
-
+        
         public List<ControlDevice> GetDevices()
         {
             List<ControlDevice> devices = new List<ControlDevice>();
@@ -839,7 +812,7 @@ namespace Driver.Corsair
 
 
                         _CUESDK.Reload();
-
+                        okayToUseCue = true;
                         ProtocolDetails = new CorsairProtocolDetails(_CUESDK.CorsairPerformProtocolHandshake());
 
                         CorsairError error = LastError;
@@ -908,7 +881,7 @@ namespace Driver.Corsair
         {
            
 
-            if (!isCueSetUp)
+            if (!isCueSetUp||!okayToUseCue)
             {
                 return;
             }
