@@ -1,0 +1,1 @@
+namespace Revision { public static class BuildRev { public static int BuildRevision = 34; } }
