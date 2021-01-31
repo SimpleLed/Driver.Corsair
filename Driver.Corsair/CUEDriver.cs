@@ -152,6 +152,7 @@ namespace Driver.Corsair
 
         public void Dispose()
         {
+            scanTimer.Stop();
             _CUESDK.UnloadCUESDK();
             okayToUseCue = false;
         }
@@ -198,11 +199,14 @@ namespace Driver.Corsair
 
         private void ScanTimerOnElapsed(object sender, ElapsedEventArgs e)
         {
+            if (!okayToUseCue) return;
             Scan();
         }
         
         public List<ControlDevice> GetDevices()
         {
+            if (!okayToUseCue) return new List<ControlDevice>();
+
             List<ControlDevice> devices = new List<ControlDevice>();
             Dictionary<string, int> modelCounter = new Dictionary<string, int>();
 
