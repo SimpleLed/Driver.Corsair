@@ -100,10 +100,10 @@ namespace Driver.Corsair
         {
             var ttt = ImageHelper.GetInheritedClasses(typeof(CorsairCustomDeviceSpecification));
 
-            var r= new List<CustomDeviceSpecification>
+            var r = new List<CustomDeviceSpecification>
             {
-               // new CustomDevices.LT100(),
-               // new CustomDevices.MM800RGBPolaris()
+                // new CustomDevices.LT100(),
+                // new CustomDevices.MM800RGBPolaris()
             };
 
             foreach (Type type in ttt)
@@ -194,7 +194,7 @@ namespace Driver.Corsair
 
             scanTimer.Enabled = true;
             Scan();
-        
+
         }
 
         private void ScanTimerOnElapsed(object sender, ElapsedEventArgs e)
@@ -202,7 +202,7 @@ namespace Driver.Corsair
             if (!okayToUseCue) return;
             Scan();
         }
-        
+
         public List<ControlDevice> GetDevices()
         {
             if (!okayToUseCue) return new List<ControlDevice>();
@@ -310,7 +310,7 @@ namespace Driver.Corsair
                 for (int i = 0; i < deviceCount; i++)
                 {
                     var tst = _CUESDK.CorsairGetDeviceInfo(i);
-                    _CorsairDeviceInfo nativeDeviceInfo = (_CorsairDeviceInfo) Marshal.PtrToStructure(tst, typeof(_CorsairDeviceInfo));
+                    _CorsairDeviceInfo nativeDeviceInfo = (_CorsairDeviceInfo)Marshal.PtrToStructure(tst, typeof(_CorsairDeviceInfo));
                     CorsairRGBDeviceInfo info = new CorsairRGBDeviceInfo(i, DeviceTypes.Other, nativeDeviceInfo, modelCounter);
                     string friendlyName = info.DeviceName.Replace("Corsair", "").Trim();
 
@@ -320,7 +320,7 @@ namespace Driver.Corsair
                     }
 
 
-                    var nativeLedPositions = (_CorsairLedPositions) Marshal.PtrToStructure(_CUESDK.CorsairGetLedPositionsByDeviceIndex(info.CorsairDeviceIndex), typeof(_CorsairLedPositions));
+                    var nativeLedPositions = (_CorsairLedPositions)Marshal.PtrToStructure(_CUESDK.CorsairGetLedPositionsByDeviceIndex(info.CorsairDeviceIndex), typeof(_CorsairLedPositions));
 
                     int structSize = Marshal.SizeOf(typeof(_CorsairLedPosition));
                     IntPtr ptr = nativeLedPositions.pLedPosition;
@@ -329,7 +329,7 @@ namespace Driver.Corsair
                     for (int ii = 0; ii < nativeLedPositions.numberOfLed; ii++)
                     {
                         _CorsairLedPosition ledPosition =
-                            (_CorsairLedPosition) Marshal.PtrToStructure(ptr, typeof(_CorsairLedPosition));
+                            (_CorsairLedPosition)Marshal.PtrToStructure(ptr, typeof(_CorsairLedPosition));
                         ptr = new IntPtr(ptr.ToInt64() + structSize);
                         positions.Add(ledPosition);
                     }
@@ -393,7 +393,7 @@ namespace Driver.Corsair
                     {
                         Driver = this,
                         Name = friendlyName,
-                        ProductImage = GetImage(imageKey),
+                        ImageKey = imageKey,
                         CorsairDeviceIndex = info.CorsairDeviceIndex,
                         DeviceType = GetDeviceType(info.CorsairDeviceType)
                     };
@@ -411,12 +411,12 @@ namespace Driver.Corsair
                             {
                                 CorsairLedId channelReferenceLed = GetChannelReferenceId(info.CorsairDeviceType, channel);
                                 if (channelReferenceLed == CorsairLedId.Invalid) continue;
-                                _CorsairChannelInfo channelInfo = (_CorsairChannelInfo) Marshal.PtrToStructure(channelInfoPtr, typeof(_CorsairChannelInfo));
+                                _CorsairChannelInfo channelInfo = (_CorsairChannelInfo)Marshal.PtrToStructure(channelInfoPtr, typeof(_CorsairChannelInfo));
 
                                 int channelDeviceInfoStructSize = Marshal.SizeOf(typeof(_CorsairChannelDeviceInfo));
                                 IntPtr channelDeviceInfoPtr = channelInfo.devices;
 
-                                _CorsairChannelDeviceInfo channelDeviceInfo = (_CorsairChannelDeviceInfo) Marshal.PtrToStructure(channelDeviceInfoPtr, typeof(_CorsairChannelDeviceInfo));
+                                _CorsairChannelDeviceInfo channelDeviceInfo = (_CorsairChannelDeviceInfo)Marshal.PtrToStructure(channelDeviceInfoPtr, typeof(_CorsairChannelDeviceInfo));
                                 if (info.CorsairDeviceType == CorsairDeviceType.Cooler && channel == 0)
                                 {
                                     //aio pump device
@@ -441,7 +441,7 @@ namespace Driver.Corsair
                                             Data = new CorsairLedData
                                             {
                                                 LEDNumber = devLed,
-                                                CorsairLedId = (int) corsairLedId
+                                                CorsairLedId = (int)corsairLedId
                                             },
                                             LEDName = "Pump " + devLed
                                         });
@@ -472,7 +472,7 @@ namespace Driver.Corsair
                                                     subDeviceName = "LT100RGB";
                                                     subDeviceType = DeviceTypes.LedStrip;
                                                     subImageKey = "LT100";
-                                                    
+
                                                 }
                                                 else
                                                 {
@@ -520,7 +520,7 @@ namespace Driver.Corsair
                                                     subImageKey = "LS100-350mm";
                                                     cds = new CorsairLS100_350mm(channelDeviceInfo.deviceLedCount);
                                                 }
-                                                else if(channelDeviceInfo.deviceLedCount == 27)
+                                                else if (channelDeviceInfo.deviceLedCount == 27)
                                                 {
                                                     subDeviceName = "450mm LED Strip";
                                                     subImageKey = "LS100-450mm";
@@ -578,7 +578,8 @@ namespace Driver.Corsair
                                                    .ToString(), //make device id start at 1 not 0 because normal people use this program
                                             ConnectedTo = "Channel " + (channel + 1),
                                             TitleOverride = info.DeviceName,
-                                            ProductImage = GetImage(subImageKey),
+                                            //ProductImage = GetImage(subImageKey),
+                                            ImageKey = subImageKey,
                                             CorsairDeviceIndex = info.CorsairDeviceIndex,
                                             DeviceType = subDeviceType,
                                             CustomDeviceSpecification = deviceSpec,
@@ -617,8 +618,8 @@ namespace Driver.Corsair
                                     {
                                         LEDNumber = ctr,
                                         CorsairLedId = lp.LedId,
-                                        X = (int) lp.left,
-                                        Y = Math.Max(0, ((int) lp.top - 38)),
+                                        X = (int)lp.left,
+                                        Y = Math.Max(0, ((int)lp.top - 38)),
                                     },
                                     LEDName = device.Name + " " + ctr
                                 });
@@ -627,8 +628,8 @@ namespace Driver.Corsair
 
                             if (positions.Any())
                             {
-                                int largestX = (int) positions.Max(x => x.left);
-                                int largestY = (int) positions.Max(x => x.top);
+                                int largestX = (int)positions.Max(x => x.left);
+                                int largestY = (int)positions.Max(x => x.top);
                                 device.GridHeight = largestY;
                                 device.GridWidth = largestX;
                                 device.LEDs = leds.ToArray();
@@ -668,6 +669,7 @@ namespace Driver.Corsair
                         }
                         else
                         {
+                            
                             devices.Add(device);
                         }
                     }
@@ -702,16 +704,19 @@ namespace Driver.Corsair
         {
             Assembly myAssembly = Assembly.GetExecutingAssembly();
 
-            try
+
+            var dave = myAssembly.GetManifestResourceNames();
+            string path = "Driver.Corsair.ProductImages." + image + ".png";
+            if (dave.Any(x => x.ToLower() == path.ToLower()))
             {
                 Stream imageStream =
-                    myAssembly.GetManifestResourceStream("Driver.Corsair.ProductImages." + image + ".png");
-                return (Bitmap) Image.FromStream(imageStream);
+                    myAssembly.GetManifestResourceStream(path);
+                return (Bitmap)Image.FromStream(imageStream);
             }
-            catch
+            else
             {
                 Stream placeholder = myAssembly.GetManifestResourceStream("Driver.Corsair.CorsairPlaceholder.png");
-                return (Bitmap) Image.FromStream(placeholder);
+                return (Bitmap)Image.FromStream(placeholder);
             }
         }
 
@@ -760,7 +765,7 @@ namespace Driver.Corsair
 
         public void Push(ControlDevice controlDevice)
         {
-            int deviceIndex = ((CorsairDevice) controlDevice).CorsairDeviceIndex;
+            int deviceIndex = ((CorsairDevice)controlDevice).CorsairDeviceIndex;
 
             int numberOfLedsToUpdate = controlDevice.LEDs.Length;
             int structSize = Marshal.SizeOf(typeof(_CorsairLedColor));
@@ -772,12 +777,12 @@ namespace Driver.Corsair
             foreach (var led in controlDevice.LEDs)
             {
                 _CorsairLedColor color = new _CorsairLedColor
-                    {
-                        ledId = led.Data is CorsairLedData cld ? cld.CorsairLedId : ((CorsairPositionalLEDData)led.Data).CorsairLedId,
-                        r = (byte) led.Color.Red,
-                        g = (byte) led.Color.Green,
-                        b = (byte) led.Color.Blue
-                    };
+                {
+                    ledId = led.Data is CorsairLedData cld ? cld.CorsairLedId : ((CorsairPositionalLEDData)led.Data).CorsairLedId,
+                    r = (byte)led.Color.Red,
+                    g = (byte)led.Color.Green,
+                    b = (byte)led.Color.Blue
+                };
 
 
 
@@ -803,7 +808,7 @@ namespace Driver.Corsair
             Debug.WriteLine("Scanning");
             if (!isCueSetUp)
             {
-               // if ((DateTime.Now - lastTimeCueWasChecked).TotalSeconds > 10)
+                // if ((DateTime.Now - lastTimeCueWasChecked).TotalSeconds > 10)
                 {
                     lastTimeCueWasChecked = DateTime.Now;
 
@@ -850,13 +855,14 @@ namespace Driver.Corsair
 
             if (isCueSetUp)
             {
-               // if ((DateTime.Now - lastTimeDevicesWasChecked).TotalSeconds > 10)
+                // if ((DateTime.Now - lastTimeDevicesWasChecked).TotalSeconds > 10)
                 {
                     var result = GetDevices();
                     foreach (ControlDevice controlDevicex in result)
                     {
                         if (foundDevices.Count == 0 || !foundDevices.Any(x => x.Name == controlDevicex.Name && x.TitleOverride == controlDevicex.TitleOverride))
                         {
+                            controlDevicex.ProductImage = GetImage(((CorsairDevice)controlDevicex).ImageKey);
                             foundDevices.Add(controlDevicex);
                             DeviceAdded?.Invoke(this, new Events.DeviceChangeEventArgs(controlDevicex));
                         }
@@ -865,7 +871,7 @@ namespace Driver.Corsair
                     List<ControlDevice> removeList = new List<ControlDevice>();
                     foreach (ControlDevice controlDevicex in foundDevices)
                     {
-                        if (result.Count == 0 || !result.Any(x=>x.Name == controlDevicex.Name && x.TitleOverride==controlDevicex.TitleOverride))
+                        if (result.Count == 0 || !result.Any(x => x.Name == controlDevicex.Name && x.TitleOverride == controlDevicex.TitleOverride))
                         {
                             removeList.Add(controlDevicex);
                             DeviceRemoved?.Invoke(this, new Events.DeviceChangeEventArgs(controlDevicex));
@@ -881,9 +887,9 @@ namespace Driver.Corsair
         }
         public void Pull(ControlDevice controlDevice)
         {
-           
 
-            if (!isCueSetUp||!okayToUseCue)
+
+            if (!isCueSetUp || !okayToUseCue)
             {
                 return;
             }
@@ -893,23 +899,23 @@ namespace Driver.Corsair
             IntPtr addPtr = new IntPtr(ptr.ToInt64());
             foreach (var led in controlDevice.LEDs)
             {
-                _CorsairLedColor color = new _CorsairLedColor {ledId = led.Data is CorsairLedData cld ? cld.CorsairLedId : ((CorsairPositionalLEDData)led.Data).CorsairLedId };
+                _CorsairLedColor color = new _CorsairLedColor { ledId = led.Data is CorsairLedData cld ? cld.CorsairLedId : ((CorsairPositionalLEDData)led.Data).CorsairLedId };
                 Marshal.StructureToPtr(color, addPtr, false);
                 addPtr = new IntPtr(addPtr.ToInt64() + structSize);
             }
 
-            _CUESDK.CorsairGetLedsColorsByDeviceIndex(((CorsairDevice) controlDevice).CorsairDeviceIndex,
+            _CUESDK.CorsairGetLedsColorsByDeviceIndex(((CorsairDevice)controlDevice).CorsairDeviceIndex,
                 controlDevice.LEDs.Count(), ptr);
 
             IntPtr readPtr = ptr;
             for (int i = 0; i < controlDevice.LEDs.Count(); i++)
             {
                 _CorsairLedColor ledColor =
-                    (_CorsairLedColor) Marshal.PtrToStructure(readPtr, typeof(_CorsairLedColor));
+                    (_CorsairLedColor)Marshal.PtrToStructure(readPtr, typeof(_CorsairLedColor));
                 try
                 {
                     var setme = controlDevice.LEDs.FirstOrDefault(x =>
-                        ((CorsairLedData) x.Data).CorsairLedId == ledColor.ledId);
+                        ((CorsairLedData)x.Data).CorsairLedId == ledColor.ledId);
                     if (setme != null)
                     {
                         setme.Color = new LEDColor(ledColor.r, ledColor.g, ledColor.b);
@@ -922,7 +928,7 @@ namespace Driver.Corsair
                     if (setme != null)
                     {
                         setme.Color = new LEDColor(ledColor.r, ledColor.g, ledColor.b);
-                    } 
+                    }
                 }
 
 
@@ -938,8 +944,8 @@ namespace Driver.Corsair
             T[] result = new T[length];
             for (int i = 0; i < length; i++)
             {
-                IntPtr p = new IntPtr((byte*) t + (i * tSizeInBytes));
-                result[i] = (T) System.Runtime.InteropServices.Marshal.PtrToStructure(p, typeof(T));
+                IntPtr p = new IntPtr((byte*)t + (i * tSizeInBytes));
+                result[i] = (T)System.Runtime.InteropServices.Marshal.PtrToStructure(p, typeof(T));
             }
 
             return result;
@@ -955,7 +961,7 @@ namespace Driver.Corsair
                 Id = Guid.Parse("59440d02-8ca3-4e35-a9a3-88b024cc0e2d"),
                 Author = "Fanman03",
                 Blurb = "Driver for all devices compatible with the iCUE SDK.",
-                CurrentVersion = new ReleaseNumber(1,0,2, AutoRevision.BuildRev.BuildRevision),
+                CurrentVersion = new ReleaseNumber(1, 0, 2, AutoRevision.BuildRev.BuildRevision),
                 GitHubLink = "https://github.com/SimpleLed/Driver.Corsair",
                 IsPublicRelease = true,
                 ProductCategory = ProductCategory.Hardware,
@@ -994,6 +1000,7 @@ namespace Driver.Corsair
             public int CorsairDeviceIndex { get; set; }
             internal _CorsairChannelDeviceInfo ChannelInfo { get; set; }
             internal CorsairLedId referenceLed { get; set; }
+            public string ImageKey { get; set; }
         }
 
         public class CorsairLedData : ControlDevice.LEDData
