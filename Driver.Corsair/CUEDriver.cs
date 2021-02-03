@@ -438,7 +438,7 @@ namespace Driver.Corsair
                                             Name = "AIO Pump",
                                             ConnectedTo = "Channel " + (channel + 1),
                                             TitleOverride = info.DeviceName,
-                                            ProductImage = GetImage(imageKey),
+                                            ImageKey = imageKey,
                                             CorsairDeviceIndex = info.CorsairDeviceIndex,
                                             DeviceType = GetDeviceType(info.CorsairDeviceType)
                                         };
@@ -468,9 +468,7 @@ namespace Driver.Corsair
                                         {
                                             CorsairLedId referenceLed = channelReferenceLed +
                                                                         (dev * channelDeviceInfo.deviceLedCount);
-
-                                            List<ControlDevice.LedUnit> leds = new List<ControlDevice.LedUnit>();
-
+                                            
                                             string subDeviceName = "Invalid";
                                             string subDeviceType = DeviceTypes.Other;
                                             string subImageKey = "CorsairPlaceholder";
@@ -606,8 +604,7 @@ namespace Driver.Corsair
                                             }
 
                                             SetDeviceOverride(subDevice, subDevice.CustomDeviceSpecification);
-
-                                            subDevice.LEDs = leds.ToArray();
+                                            
                                             devices.Add(subDevice);
                                         }
                                     }
@@ -647,7 +644,6 @@ namespace Driver.Corsair
                                     device.LEDs = leds.ToArray();
                                 }
 
-
                             }
                             else
                             {
@@ -669,7 +665,7 @@ namespace Driver.Corsair
                                 }
 
                                 device.LEDs = leds.ToArray();
-
+                                
                             }
 
                             if (info.CorsairDeviceType == CorsairDeviceType.CommanderPro ||
@@ -681,7 +677,6 @@ namespace Driver.Corsair
                             }
                             else
                             {
-
                                 devices.Add(device);
                             }
                         }
@@ -927,10 +922,12 @@ namespace Driver.Corsair
             {
                 _CorsairLedColor ledColor =
                     (_CorsairLedColor)Marshal.PtrToStructure(readPtr, typeof(_CorsairLedColor));
+                
                 try
                 {
-                    var setme = controlDevice.LEDs.FirstOrDefault(x =>
-                        ((CorsairLedData)x.Data).CorsairLedId == ledColor.ledId);
+                    
+                    var setme = controlDevice.LEDs.FirstOrDefault(x=> (x.Data is CorsairLedData data && data.CorsairLedId == ledColor.ledId) || (x.Data is CorsairPositionalLEDData pdata && pdata.CorsairLedId == ledColor.ledId));
+                    
                     if (setme != null)
                     {
                         setme.Color = new LEDColor(ledColor.r, ledColor.g, ledColor.b);
@@ -938,8 +935,7 @@ namespace Driver.Corsair
                 }
                 catch
                 {
-                    var setme = controlDevice.LEDs.FirstOrDefault(x =>
-                        ((CorsairPositionalLEDData)x.Data).CorsairLedId == ledColor.ledId);
+                    var setme = controlDevice.LEDs.FirstOrDefault(x => (x.Data is CorsairLedData data && data.CorsairLedId == ledColor.ledId) || (x.Data is CorsairPositionalLEDData pdata && pdata.CorsairLedId == ledColor.ledId));
                     if (setme != null)
                     {
                         setme.Color = new LEDColor(ledColor.r, ledColor.g, ledColor.b);
